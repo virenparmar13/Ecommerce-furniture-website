@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<style>
+table,th,td {
+  border : 1px solid black;
+  border-collapse: collapse;
+}
+th,td {
+  padding: 5px;
+}
+</style>
+<body>
+
+<h1>The XMLHttpRequest Object</h1>
+
+<button type="button" onclick="loadDoc()">CONTACT INFO</button>
+<br><br>
+<table id="demo"></table>
+
+<script>
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      myFunction(this);
+    }
+  };
+  xhttp.open("GET", "aboutus.xml", true);
+  xhttp.send();
+}
+function myFunction(xml) {
+  var i;
+  var xmlDoc = xml.responseXML;
+  var table="<tr><th>EMAIL</th><th>PHONE</th><th>FACEBOOK</th></tr>";
+  var x = xmlDoc.getElementsByTagName("one");
+  for (i = 0; i <x.length; i++) {
+    table += "<tr><td>" +
+    x[i].getElementsByTagName("email")[0].childNodes[0].nodeValue +
+    "</td><td>" +
+    x[i].getElementsByTagName("phone")[0].childNodes[0].nodeValue +
+    "</td><td>" +
+    x[i].getElementsByTagName("face")[0].childNodes[0].nodeValue +
+    "</td></tr>";
+  }
+  document.getElementById("demo").innerHTML = table;
+}
+</script>
+
+</body>
+</html>
+
+
+
+<?php
+    // $xml = new SimpleXMLElement("aboutus.xml");
+    $xml= simplexml_load_file("aboutus.xml");
+    ?>
+    <div class="tbg">
+        <table class="tab" border=1>
+          <thead>
+            <tr>
+              <th>EMAIL</th>
+              <th>PHONE</th>
+              <th>FACEBOOK</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr>
+              <td><?php echo $xml->one->email; ?></td>
+              <td><?php echo $xml->one->phone; ?></td>
+              <td><?php echo $xml->one->face; ?></td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
